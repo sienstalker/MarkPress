@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="index-title">{{ site_title }}</h1>
+{% if pages %}
+<ol class="page-list">
+  {% for page in pages %}
+  <li>
+    <a href="{{ page.url }}">{{ page.title }}</a>
+    {% if page.date %}<time datetime="{{ page.date.isoformat() }}">{{ page.date.strftime("%d %b %Y") }}</time>{% endif %}
+    {% if page.summary %}<p>{{ page.summary }}</p>{% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% else %}
+<p class="empty">No pages yet. Add a Markdown file to the content folder and push to publish it.</p>
+{% endif %}
+{% endblock %}
