@@ -1,0 +1,86 @@
+:root {
+  --paper: #fbfcfe;
+  --ink: #1c2430;
+  --muted: #5a6577;
+  --accent: #1f5f8b;
+  --rule: #dde3ea;
+  --code-bg: #eef2f6;
+  --serif: Charter, "Bitstream Charter", "Iowan Old Style", "Sitka Text", Cambria, Georgia, serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #141a22;
+    --ink: #e6eaf0;
+    --muted: #9aa5b5;
+    --accent: #7db7e0;
+    --rule: #2a3340;
+    --code-bg: #1d2530;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0 auto;
+  max-width: 42rem;
+  padding: 2.5rem 1.25rem 3rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+a { color: var(--accent); text-underline-offset: 0.18em; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.site-header { margin-bottom: 3rem; }
+.site-name {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+.site-name::before { content: "# "; color: var(--accent); }
+
+h1, h2, h3 { line-height: 1.2; font-weight: 700; }
+.index-title { font-size: 2.75rem; margin: 0 0 2rem; letter-spacing: -0.01em; }
+.page-header h1 { font-size: 2.25rem; margin: 0 0 0.4rem; }
+.page-header { margin-bottom: 2rem; }
+
+time { color: var(--muted); font-size: 0.95rem; }
+
+.page-list { list-style: none; padding: 0; margin: 0; }
+.page-list li { padding: 1.25rem 0; border-top: 1px solid var(--rule); }
+.page-list a { font-size: 1.3rem; font-weight: 700; margin-right: 0.6rem; }
+.page-list p { margin: 0.35rem 0 0; color: var(--muted); }
+
+.prose h2 { font-size: 1.5rem; margin-top: 2.25rem; }
+.prose h3 { font-size: 1.2rem; margin-top: 1.75rem; }
+.prose img { max-width: 100%; }
+.prose blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+}
+
+code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 3px; }
+pre { background: var(--code-bg); padding: 1rem; overflow-x: auto; border-radius: 4px; line-height: 1.45; }
+pre code { background: none; padding: 0; }
+
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; }
+th, td { border-bottom: 1px solid var(--rule); padding: 0.45rem 0.75rem; text-align: left; }
+
+.back { margin-top: 3rem; }
+.empty { color: var(--muted); }
+
+.site-footer {
+  margin-top: 4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.site-footer p { margin: 0.2rem 0; }
