@@ -1,6 +1,6 @@
 ---
 title: Welcome to MarkPress
-date: 2026-09-25
+date:  25/09/2026
 ---
 
 MarkPress turns a folder of Markdown files into a website. Write a page, push it to GitHub, and Jenkins builds, tests and publishes the site within a minute.
