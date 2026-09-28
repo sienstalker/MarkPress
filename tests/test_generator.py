@@ -233,6 +233,7 @@ def test_build_info_from_env():
     env = {"GITHUB_RUN_NUMBER": "7", "GITHUB_SHA": "abcdef1234567"}
     assert build_info_from_env(env) == "Build #7 (commit abcdef1)"
 
+
 def test_build_info_on_render():
     env = {"RENDER_GIT_COMMIT": "1234567890abcdef"}
     assert build_info_from_env(env) == "Deployed on Render from commit 1234567"

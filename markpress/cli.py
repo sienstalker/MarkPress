@@ -18,6 +18,7 @@ def build_info_from_env(environ=os.environ) -> str | None:
         return f"Deployed on Render from commit {environ['RENDER_GIT_COMMIT'][:7]}"
     return None
 
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="markpress",
