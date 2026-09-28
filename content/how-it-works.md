@@ -3,16 +3,16 @@ title: How the pipeline works
 date: 2026-09-24
 ---
 
-Each push to the `main` branch on GitHub triggers a webhook, and Jenkins runs these stages on the EC2 server:
+Each push to the `main` branch on GitHub starts a GitHub Actions workflow, which runs these steps on GitHub's own servers:
 
 | Stage | What happens |
 |-------|--------------|
-| Checkout | Jenkins pulls the latest commit from GitHub |
-| Set up Python | A virtual environment is created and dependencies installed |
+| Checkout | The workflow fetches the pushed commit |
+| Set up Python | Python and the dependencies are installed |
 | Lint | `flake8` checks the code style |
 | Test | `pytest` runs the unit tests and reports coverage |
 | Build site | MarkPress converts `content/` into HTML in `public/` |
-| Deploy | The new site is copied into the folder Nginx serves |
-| Smoke test | Jenkins fetches the live page and checks the build number |
+| Deploy | The site is published to GitHub Pages |
+| Smoke test | The workflow fetches the live page and checks the build number |
 
-If any stage fails, the pipeline stops and the live site keeps serving the last good build.
+If any stage fails, the workflow stops and the live site keeps serving the last good build.
