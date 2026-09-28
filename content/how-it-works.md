@@ -3,16 +3,14 @@ title: How the pipeline works
 date: 2026-09-24
 ---
 
-Each push to the `main` branch on GitHub starts a GitHub Actions workflow, which runs these steps on GitHub's own servers:
+Each push to the `main` branch on GitHub starts a GitHub Actions workflow that checks the change. Render deploys the site only after every check passes.
 
-| Stage | What happens |
-|-------|--------------|
-| Checkout | The workflow fetches the pushed commit |
-| Set up Python | Python and the dependencies are installed |
-| Lint | `flake8` checks the code style |
-| Test | `pytest` runs the unit tests and reports coverage |
-| Build site | MarkPress converts `content/` into HTML in `public/` |
-| Deploy | The site is published to GitHub Pages |
-| Smoke test | The workflow fetches the live page and checks the build number |
+| Stage | Where | What happens |
+|-------|-------|--------------|
+| Lint | GitHub Actions | `flake8` checks the code style |
+| Test | GitHub Actions | `pytest` runs the unit tests and reports coverage |
+| Build check | GitHub Actions | MarkPress builds the site to prove it works |
+| Build | Render | Render installs the dependencies and runs MarkPress |
+| Deploy | Render | The new site goes live on Render's global CDN |
 
-If any stage fails, the workflow stops and the live site keeps serving the last good build.
+If any check fails, Render skips the deploy and the live site keeps serving the last good version.
