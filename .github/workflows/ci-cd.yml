@@ -1,8 +1,8 @@
-# MarkPress CI/CD pipeline on GitHub Actions.
-# Every push to main: lint -> test -> build the site -> deploy to GitHub Pages -> smoke test.
-# Pull requests run only the checks, so broken changes are caught before merging.
+# MarkPress CI pipeline on GitHub Actions.
+# Every push and pull request: lint -> test -> check the site builds.
+# Render watches these checks and deploys a commit to production only when they all pass.
 
-name: CI/CD
+name: CI
 
 on:
   push:
@@ -13,10 +13,6 @@ on:
 
 permissions:
   contents: read
-
-concurrency:                    # never run two deploys at once
-  group: pages
-  cancel-in-progress: false
 
 jobs:
   test:
@@ -71,40 +67,8 @@ jobs:
       - name: Build site
         run: python -m markpress --src content --out public
 
-      - name: Upload site for GitHub Pages
-        uses: actions/upload-pages-artifact@v5
+      - name: Upload built site
+        uses: actions/upload-artifact@v6
         with:
+          name: site
           path: public/
-
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: build
-    if: github.event_name != 'pull_request'   # PRs are checked but never deployed
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write              # to publish to GitHub Pages
-      id-token: write           # to prove the deployment comes from this repo
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-      - name: Smoke test
-        env:
-          SITE_URL: ${{ steps.deployment.outputs.page_url }}
-          RUN_NUMBER: ${{ github.run_number }}
-        run: |
-          # GitHub's CDN can take a few seconds to serve the new version, so retry.
-          for attempt in 1 2 3 4 5 6 7 8 9 10; do
-            if curl -fsS -H "Cache-Control: no-cache" "${SITE_URL}?check=${attempt}" | grep -q "Build #${RUN_NUMBER} "; then
-              echo "Live site is serving build #${RUN_NUMBER}: ${SITE_URL}"
-              exit 0
-            fi
-            echo "Attempt ${attempt}: new version not live yet, retrying in 10s..."
-            sleep 10
-          done
-          echo "The live site is not serving build #${RUN_NUMBER}."
-          exit 1
