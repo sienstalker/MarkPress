@@ -1,0 +1,14 @@
+# Render Blueprint for MarkPress: a free static site.
+# Render builds the site itself and deploys only after GitHub Actions checks pass.
+services:
+  - type: web
+    runtime: static
+    name: markpress
+    branch: main
+    autoDeployTrigger: checksPass          # wait for the CI workflow to go green
+    buildCommand: pip install -r requirements.txt && python -m markpress --src content --out public
+    staticPublishPath: ./public
+    headers:
+      - path: /*                           # pages change on every deploy, so browsers re-check them
+        name: Cache-Control
+        value: no-cache
