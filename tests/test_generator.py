@@ -229,8 +229,8 @@ def test_real_content_folder_builds(tmp_path):
 
 def test_build_info_from_env():
     assert build_info_from_env({}) is None
-    assert build_info_from_env({"BUILD_NUMBER": "7"}) == "Build #7"
-    env = {"BUILD_NUMBER": "7", "GIT_COMMIT": "abcdef1234567"}
+    assert build_info_from_env({"GITHUB_RUN_NUMBER": "7"}) == "Build #7"
+    env = {"GITHUB_RUN_NUMBER": "7", "GITHUB_SHA": "abcdef1234567"}
     assert build_info_from_env(env) == "Build #7 (commit abcdef1)"
 
 

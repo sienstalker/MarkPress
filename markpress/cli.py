@@ -9,11 +9,11 @@ from markpress.generator import DEFAULT_SITE_TITLE, build_site
 
 
 def build_info_from_env(environ=os.environ) -> str | None:
-    """Describe the Jenkins build, if we are running inside one."""
-    number = environ.get("BUILD_NUMBER")
+    """Describe the GitHub Actions run, if we are running inside one."""
+    number = environ.get("GITHUB_RUN_NUMBER")
     if not number:
         return None
-    commit = environ.get("GIT_COMMIT", "")[:7]
+    commit = environ.get("GITHUB_SHA", "")[:7]
     return f"Build #{number} (commit {commit})" if commit else f"Build #{number}"
 
 
