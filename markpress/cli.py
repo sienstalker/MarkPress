@@ -9,13 +9,14 @@ from markpress.generator import DEFAULT_SITE_TITLE, build_site
 
 
 def build_info_from_env(environ=os.environ) -> str | None:
-    """Describe the GitHub Actions run, if we are running inside one."""
-    number = environ.get("GITHUB_RUN_NUMBER")
-    if not number:
-        return None
-    commit = environ.get("GITHUB_SHA", "")[:7]
-    return f"Build #{number} (commit {commit})" if commit else f"Build #{number}"
-
+    """Describe where this build came from: a GitHub Actions run or a Render deploy."""
+    if environ.get("GITHUB_RUN_NUMBER"):
+        commit = environ.get("GITHUB_SHA", "")[:7]
+        number = environ["GITHUB_RUN_NUMBER"]
+        return f"Build #{number} (commit {commit})" if commit else f"Build #{number}"
+    if environ.get("RENDER_GIT_COMMIT"):
+        return f"Deployed on Render from commit {environ['RENDER_GIT_COMMIT'][:7]}"
+    return None
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
